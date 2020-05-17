@@ -1,2 +1,2 @@
-Moje drugie repozytorium stworzone przez konsole
+Repozytorium bedzie uzywane do projektu
 
