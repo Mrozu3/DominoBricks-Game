@@ -1,25 +1,24 @@
-#include <SFML/Graphics.hpp>
+#include "Game.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(500, 500), "SFML");
-    sf::CircleShape shape(250.f);
-    shape.setFillColor(sf::Color::Red);
 
-    while (window.isOpen())
+  RenderWindow window(VideoMode(800,600),"Nazwa Gry",Style::Default);
+  window.setFramerateLimit(60);
+  
+
+  //Petla gry
+  while(window.isOpen())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
+      Event event;
+      while(window.pollEvent(event))
+            {
+              if(event.type == Event::Closed)
                 window.close();
-        }
-
-        window.clear();
-        window.draw(shape);
-        window.display();
+              if(event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)
+                window.close();
+              }
     }
-
+    
     return 0;
 }
-
