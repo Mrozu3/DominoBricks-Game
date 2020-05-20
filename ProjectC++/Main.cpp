@@ -1,41 +1,27 @@
-//Deklaracje
 #include "Game.h"
-#include "Gracz.h"
-#include <SFML/Graphics.hpp>
+
+using namespace sf;
+using namespace std;
+
 
 int main()
 {
+	//Losowy czas
+	srand(static_cast<unsigned>(time(NULL)));
 
-	//Okno gry window
-	RenderWindow window(VideoMode(800, 600), "Nazwa Gry", Style::Default);
+	//Zalaczamy gre
+	Game game;
 
-	//Zainicjowanie gry
-	Game game(&window);
-	
-	CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
-
-	//Gra w³¹czona
-	while(window.isOpen())
+	//Petla gry
+	while (game.otwarteOkno() && !game.gameOvercontrol())
 	{
-		//Obs³uga zdarzeñ
-		Event event;
-		while(window.pollEvent(event))
-		{
-			//Zamkniecie
-			if (event.type == Event::Closed) {
-				window.close();
-			}
-			
-			//Klikniecie Esc
-			if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) {
-				window.close();
-			}
-		}
+		    //Na biezaco
+	  	    game.update();
 
-		game.Update();
-		game.Draw();
+			//Render
+			game.render();
 	}
-	
-	return 0; 
+
+	//Zamykanie
+	return 0;
 }

@@ -1,26 +1,77 @@
 #pragma once
 
-//Deklaracje
-#include "Gracz.h"
+//Biblioteki SFML
+#include "SFML/Graphics.hpp"
+#include "SFML/System.hpp"
+#include "SFML/Audio.hpp"
+#include "SFML/Window.hpp"
+#include "SFML/Network.hpp"
+
+//Biblioteki strumieni we/wy 
+#include <iostream>
+#include <vector>
+#include <ctime>
+
+//Klasa nadrzêdna jako serce/silnik gry
+
+using namespace sf;
+using namespace std;
 
 class Game
 {
 private:
-	RenderWindow *window;
+	
+	//Zmienne render
+		//Dynamicznie, zeby moc usuwac
+		RenderWindow* okno;
+		//Wielkosc
+		VideoMode videoMode;
+		//Zdarzenie
+		Event event;
 
-	Gracz *gracz;
-	Texture TeksturaGracza;
+	//Prywatna struktura
+	void inicZmienne();
+	void inicOkno();
+	void inicWrog();
 
-public:
-	Game(RenderWindow *window);
+	//Mechanizmy
+		//Wynik, zawsze dodatni wynik, koniec gry
+		int punkty;
+		bool gameOver;
+		//Wrogowie
+		float spawnTime;
+		float spawnTimeMax;
+		int maxWrogow;
+		//Myszka oszusta
+		int Trzymam;
+
+	//Obiekty gry
+	RectangleShape wrog;
+	vector<RectangleShape> wrogowie;
+
+
+	//Pozycja myszki
+	Vector2i pozycjaMyszkiOkno;
+	Vector2f pozycjaMyszkiWidok;
+
+public: 
+
+	//Konstruktory i destruktory
+	Game();
 	virtual ~Game();
 
-	// 
-	inline RenderWindow& getWindow() { return *this->window; }
+	//Kontrolki
+	const bool otwarteOkno() const;
+	const bool gameOvercontrol() const;
 
-	//Funkcje
-	void Move();
-	void Update();
-	void Draw();
+	//Funkcje obslugi
+	void Nasluch();
+	void update();
+	void updateMyszka();
+	void render();
+	//Funkcje wrogow
+	void spawnWrog();
+	void updateWrog();
+	void renderWrog();
 };
 
