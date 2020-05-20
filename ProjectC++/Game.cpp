@@ -131,7 +131,7 @@ void Game::inicOkno()
 	this->videoMode.width = 400;
 	this->videoMode.height = 800;
     //Tworzymy okono gry  hight,width, nazwa gry, przyciski, ale bez zmiany wielkosci
-    this->okno = new RenderWindow(this->videoMode, "Nazwa Gry", Style::Titlebar | Style::Close);
+    this->okno = new RenderWindow(this->videoMode, "Domino Bricks", Style::Titlebar | Style::Close);
 	
 	//Limit klatek
 	this->okno->setFramerateLimit(60);
@@ -191,7 +191,7 @@ void Game::updateWrog()
 		if (this->wrogowie[i].getPosition().y > this->okno->getSize().y) {
 			//Usuwa wroga jesli spadl poza mape
 			this->wrogowie.erase(this->wrogowie.begin() + i);
-			cout << "Wrog uciekl! Tracisz punkty, zotsa³o: \n" << punkty << "!\n";
+			cout << "Klocek uciekl! Tracisz punkty, zostalo: \n" << punkty << "!\n";
 			this->punkty -= 5;
 		}
 	}
