@@ -8,10 +8,12 @@ using namespace std;
 //Konstruktory i destruktory
 Game::Game()
 {
-    //Inicjowanie zmiennych
+    //Inicjowanie 
     this->inicZmienne();
     this->inicOkno();
 	this->inicWrog();
+	this->iniCzcionka();
+	this->iniTekst();
 }
 
 Game::~Game()
@@ -57,18 +59,29 @@ const bool Game::gameOvercontrol() const
 //Aktualizuje to co ma sie dziac na ekranie
 void Game::update()
 {
+
 	this->Nasluch();
 
+	//Jesli punkty nie spadly ponizej zera
 	if (this->gameOver == false) {
 
 		this->updateMyszka();
 
 		this->updateWrog();
 
+		this->updateTekst();
+
+	}
+	
+	//Jesli punkty spadly ponizej 0
+	if (this->punkty <= 0) {
+
+		this->gameOver = true;
 	}
 
-	if (this->punkty <= 0) {
-		this->gameOver = true;
+	if (this->punkty > 120) {
+
+		this->maxWrogow = 6;
 	}
 
 }
@@ -102,6 +115,8 @@ void Game::render()
 
 	//Generujemy obiekty
 	this->renderWrog();
+	//Generujemy tekst
+	this->renderTekst();
 	 
 	//Wyswietlamy okno
 	this->okno->display();
@@ -109,6 +124,7 @@ void Game::render()
 
 
 //Funkcje prywatne
+
 void Game::inicZmienne()
 {
 	//Literal pustego wskaznika
@@ -118,7 +134,7 @@ void Game::inicZmienne()
 	//GameOver
 	this->gameOver = false;
 	//Wrogowie
-	this->spawnTimeMax = 10.f;
+	this->spawnTimeMax = 16.f;
 	this->spawnTime = this->spawnTimeMax;
 	this->maxWrogow = 5;
 	//Trzymanie myszki
@@ -132,7 +148,6 @@ void Game::inicOkno()
 	this->videoMode.height = 800;
     //Tworzymy okono gry  hight,width, nazwa gry, przyciski, ale bez zmiany wielkosci
     this->okno = new RenderWindow(this->videoMode, "Domino Bricks", Style::Titlebar | Style::Close);
-	
 	//Limit klatek
 	this->okno->setFramerateLimit(60);
 }
@@ -146,6 +161,23 @@ void Game::inicWrog()
 	this->wrog.setScale(Vector2f(1.f, 1.f));
 	this->wrog.setOutlineColor(Color(0,0,0,255));
 	this->wrog.setOutlineThickness(3.f);
+}
+
+void Game::iniCzcionka()
+{
+	if (this->czcionka.loadFromFile("/font.ttf")) {
+		cout << "ERROR! Nie mozna zaladowac czcionki" << "\n";
+	}
+
+}
+
+void Game::iniTekst()
+{
+	this->tekst.setFont(this->czcionka);
+	this->tekst.setCharacterSize(20);
+	this->tekst.setFillColor(Color(255,255,255,255));
+	this->tekst.setString("EXAMPLE");
+
 }
  
 void Game::spawnWrog()
@@ -185,7 +217,7 @@ void Game::updateWrog()
 	{
 	
 		//Poruszanie po y
-		this->wrogowie[i].move(0.f, 3.f);
+		this->wrogowie[i].move(0.f, 7.f);
 
 		//Czy wrog jest w ramie okna
 		if (this->wrogowie[i].getPosition().y > this->okno->getSize().y) {
@@ -217,10 +249,8 @@ void Game::updateWrog()
 					//Zdobywanie punkta
 					cout << "Zdobywasz punkt:" << punkty <<"!\n";
 					this->punkty += 1;
-
 				}
 			}
-
 		}
 
 		// Jesli nie klikasz
@@ -243,9 +273,26 @@ void Game::updateWrog()
 void Game::renderWrog()
 {
 	//Renderuje wszystkich wrogow
-	for (auto& e : this->wrogowie)
+	for (auto& trigger : this->wrogowie)
 	{
-		//Poruszanie po y
-		this->okno->draw(e);
+		this->okno->draw(trigger);
 	}
+}
+
+void Game::updateTekst()
+{	
+	//Tworzymy obiekt do ciagu znakow
+	stringstream wypisz;
+
+	//Wypisujemy w niego tekst
+	wypisz << "Points: " << this->punkty;
+
+	//Ustawiamy
+	this->tekst.setString("NONE");
+}
+
+void Game::renderTekst()
+{
+	//Renderuje tekst
+	this->okno->draw(this->tekst);
 }

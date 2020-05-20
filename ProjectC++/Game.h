@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
+#include <sstream>
 
 //Klasa nadrzêdna jako serce/silnik gry
 
@@ -33,6 +34,8 @@ private:
 	void inicZmienne();
 	void inicOkno();
 	void inicWrog();
+	void iniCzcionka();
+	void iniTekst();
 
 	//Mechanizmy
 		//Wynik, zawsze dodatni wynik, koniec gry
@@ -48,6 +51,9 @@ private:
 	//Obiekty gry
 	RectangleShape wrog;
 	vector<RectangleShape> wrogowie;
+	//Czcionka i tekst
+	Font czcionka;
+	Text tekst;
 
 
 	//Pozycja myszki
@@ -73,5 +79,8 @@ public:
 	void spawnWrog();
 	void updateWrog();
 	void renderWrog();
+	//Dodatki
+	void updateTekst();
+	void renderTekst();
 };
 
