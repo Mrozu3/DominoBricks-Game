@@ -10,15 +10,14 @@ Game::Game()
 {
     //Inicjowanie 
     this->inicZmienne();
-    this->inicOkno();
-	this->inicWrog();
+    this->inicOkno();	
 	this->iniCzcionka();
-	this->iniTekst();
+	this->iniTekst();	
 }
 
 Game::~Game()
 {
-    delete this->okno;
+    delete this->okno;	
 }
 
 //Funkcje publiczne
@@ -54,7 +53,6 @@ const bool Game::gameOvercontrol() const
 {
 	return this->gameOver;
 }
-
 
 //Aktualizuje to co ma sie dziac na ekranie
 void Game::update()
@@ -149,23 +147,14 @@ void Game::inicOkno()
     //Tworzymy okono gry  hight,width, nazwa gry, przyciski, ale bez zmiany wielkosci
     this->okno = new RenderWindow(this->videoMode, "Domino Bricks", Style::Titlebar | Style::Close);
 	//Limit klatek
-	this->okno->setFramerateLimit(60);
-}
-
-void Game::inicWrog()
-{
-	//Pozycja wroga
-	this->wrog.setPosition(Vector2f(400, 300));
-	//Wyglad wroga
-	this->wrog.setSize(Vector2f(50.f, 50.f));
-	this->wrog.setScale(Vector2f(1.f, 1.f));
-	this->wrog.setOutlineColor(Color(0,0,0,255));
-	this->wrog.setOutlineThickness(3.f);
+	this->okno->setFramerateLimit(60);	
 }
 
 void Game::iniCzcionka()
 {
-	if (this->czcionka.loadFromFile("/font.ttf")) {
+	this->czcionka.loadFromFile("Pixellari.ttf");
+
+	if (this->czcionka.loadFromFile("Pixellari.ttf")) {
 		cout << "ERROR! Nie mozna zaladowac czcionki" << "\n";
 	}
 
@@ -179,20 +168,17 @@ void Game::iniTekst()
 	this->tekst.setString("EXAMPLE");
 
 }
- 
+ //
 void Game::spawnWrog()
-{
-	//Okreslamy pozycje wroga, tak zeby nie wyszedl poza okno konwertujac typ, spadaja z gory
-	this->wrog.setPosition(
-		static_cast<float>(rand()%static_cast<int>(this->okno->getSize().x - this->wrog.getSize().x)),
-		0.f
-		);
+{	
+	
+	if (this->punkty >= this->punkty + 50)
+	{
+		//this->boss = new Boss(10, 50, 10);
+		//Boss bos(1, 2, 3);
+	}
 
-	//Kolor wroga
-	this->wrog.setFillColor(Color::White);
-	//Respi wroga
-	this->wrogowie.push_back(this->wrog);
-
+	this->wrogowie.push_back(Enemy(1, 1, Vector2f(this->okno->getSize())));
 }
 
 void Game::updateWrog()
@@ -211,18 +197,18 @@ void Game::updateWrog()
 				this->spawnTime += 1.f;
 		}
 	}
-
+	
 	//Wrog poza mapa
 	for (int i = 0; i < this->wrogowie.size(); i++)
 	{
 	
 		//Poruszanie po y
-		this->wrogowie[i].move(0.f, 7.f);
+		this->wrogowie[i].ksztalt.move(0.f, 4.f);
 
 		//Czy wrog jest w ramie okna
-		if (this->wrogowie[i].getPosition().y > this->okno->getSize().y) {
+		if (this->wrogowie[i].ksztalt.getPosition().y > this->okno->getSize().y) {
 			//Usuwa wroga jesli spadl poza mape
-			this->wrogowie.erase(this->wrogowie.begin() + i);
+			this->wrogowie.erase(this->wrogowie.begin() + i);			
 			cout << "Klocek uciekl! Tracisz punkty, zostalo: \n" << punkty << "!\n";
 			this->punkty -= 5;
 		}
@@ -240,12 +226,12 @@ void Game::updateWrog()
 			for (int i = 0; i < this->wrogowie.size() && statusWroga == false; i++)
 			{
 				//Czy myszka jest w ksztalcie ograniczajcym obiekt
-				if (this->wrogowie[i].getGlobalBounds().contains(this->pozycjaMyszkiWidok))
+				if (this->wrogowie[i].ksztalt.getGlobalBounds().contains(this->pozycjaMyszkiWidok))
 				{
 					//Usuwa wroga na pozycji ktora znalezlismy
 					statusWroga = true;
 					this->wrogowie.erase(this->wrogowie.begin() + i);
-
+					
 					//Zdobywanie punkta
 					cout << "Zdobywasz punkt:" << punkty <<"!\n";
 					this->punkty += 1;
@@ -272,10 +258,16 @@ void Game::updateWrog()
 
 void Game::renderWrog()
 {
-	//Renderuje wszystkich wrogow
-	for (auto& trigger : this->wrogowie)
+	//Renderuje wszystkich wrogow	
+	
+	/*for (auto& trigger : this->wrogowie.ksztalt)
 	{
 		this->okno->draw(trigger);
+	}*/
+	
+	for (size_t i = 0; i < wrogowie.size(); i++)
+	{
+		this->okno->draw(wrogowie[i].ksztalt);
 	}
 }
 
@@ -285,10 +277,10 @@ void Game::updateTekst()
 	stringstream wypisz;
 
 	//Wypisujemy w niego tekst
-	wypisz << "Points: " << this->punkty;
+	wypisz << "Punkty: " << this->punkty;
 
 	//Ustawiamy
-	this->tekst.setString("NONE");
+	this->tekst.setString("awdawdawdawdawd");
 }
 
 void Game::renderTekst()

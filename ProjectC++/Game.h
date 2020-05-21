@@ -1,17 +1,6 @@
 #pragma once
 
-//Biblioteki SFML
-#include "SFML/Graphics.hpp"
-#include "SFML/System.hpp"
-#include "SFML/Audio.hpp"
-#include "SFML/Window.hpp"
-#include "SFML/Network.hpp"
-
-//Biblioteki strumieni we/wy 
-#include <iostream>
-#include <vector>
-#include <ctime>
-#include <sstream>
+#include "Enemy.h"
 
 //Klasa nadrzêdna jako serce/silnik gry
 
@@ -29,6 +18,10 @@ private:
 		VideoMode videoMode;
 		//Zdarzenie
 		Event event;
+				
+		vector<Enemy> wrogowie;		
+		//Boss *boss;
+		//Boss boss;
 
 	//Prywatna struktura
 	void inicZmienne();
@@ -49,8 +42,10 @@ private:
 		int Trzymam;
 
 	//Obiekty gry
-	RectangleShape wrog;
-	vector<RectangleShape> wrogowie;
+
+	//RectangleShape wrog;
+	//vector<RectangleShape> wrogowie;
+
 	//Czcionka i tekst
 	Font czcionka;
 	Text tekst;
@@ -62,8 +57,9 @@ private:
 
 public: 
 
-	//Konstruktory i destruktory
+	//Konstruktory
 	Game();
+	//Destruktor wirtualny
 	virtual ~Game();
 
 	//Kontrolki
