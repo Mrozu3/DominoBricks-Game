@@ -2,7 +2,7 @@
 
 #include "Enemy.h"
 
-//Klasa nadrzêdna jako serce/silnik gry
+//Klasa narzedna jako serce/silnik gry
 
 using namespace sf;
 using namespace std;
@@ -20,9 +20,8 @@ private:
 		Event event;
 				
 		vector<Enemy> wrogowie;		
-		//Boss *boss;
-		//Boss boss;
-
+		Boss boss;
+		
 	//Prywatna struktura
 	void inicZmienne();
 	void inicOkno();
@@ -33,10 +32,12 @@ private:
 	//Mechanizmy
 		//Wynik, zawsze dodatni wynik, koniec gry
 		int punkty;
+		int punkty_cp;
 		bool gameOver;
 		//Wrogowie
 		float spawnTime;
 		float spawnTimeMax;
+		int shootTimer, shootTimerMax;
 		int maxWrogow;
 		//Myszka oszusta
 		int Trzymam;
@@ -75,6 +76,7 @@ public:
 	void spawnWrog();
 	void updateWrog();
 	void renderWrog();
+	void isAlive();
 	//Dodatki
 	void updateTekst();
 	void renderTekst();

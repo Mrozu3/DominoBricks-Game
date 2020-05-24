@@ -13,36 +13,46 @@
 #include <ctime>
 #include <sstream>
 
-
-
 using namespace sf;
 
+//Klasa wrogow
 class Enemy
 {
-private:
+protected:
+	//Zmienne dla wrogow
 	int hp;
 	int punkty;	
 	
-public:	
-	Enemy();
-	Enemy(int hp, int punkty, Vector2f wymiary);
-	//Enemy(Enemy &wrog);
+public:		
+	//Konstruktor
+	Enemy(Vector2f wymiary = Vector2f(300, 400), int hp = 1, int punkty = 1);
+	//Zadefinowanie ksztaltu
 	RectangleShape ksztalt;
 	
-
-	void zmienKolor(std::string);
+	//Metoda wirtualna i klasa abstrakcyjna
+	void virtual zmienKolor();	
+	void inicWrog();
 	int zwrocPunkty();
-	//!!!!!!!!!!!!!!!!!!!!!!! void virtual wyswietlHp();
-	void inicWrog();	
 };
 
-
+//Klasa boss dziedziwczy po Enemy
 class Boss : public Enemy
 {
-	int obrazenia;
+
+private:
+	int obrazenia;	
 
 public:
-	Boss();
-	Boss(int hp, int punkty, int obrazenia);
+	Boss(int hp = 10, int punkty = 5, int obrazenia = 10);
+	Boss(const Boss& boss);
+	
+	//Przeciazenie operatorow
+	void operator-(int obrazenia);
+
+	//Nadpisanianie 
+	void zmienKolor();
+
+	int zwrocObrazenia();	
+	int zwrocHp();
 };
 

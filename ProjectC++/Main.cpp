@@ -11,6 +11,11 @@ int main()
 
 	//Zalaczamy gre
 	Game game;
+	
+	/* Metoda koopiujaca 
+	Boss boss;
+	Boss boss2 = boss;
+	*/
 
 	//Petla gry
 	while (game.otwarteOkno() && !game.gameOvercontrol())

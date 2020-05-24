@@ -128,15 +128,21 @@ void Game::inicZmienne()
 	//Literal pustego wskaznika
     this->okno = nullptr;
 	//Punkty na start
-	this->punkty = 100;
+	this->punkty = 10;
+	this->punkty_cp = 10;
 	//GameOver
 	this->gameOver = false;
 	//Wrogowie
 	this->spawnTimeMax = 16.f;
 	this->spawnTime = this->spawnTimeMax;
+	this->shootTimer = 0;
+	this->shootTimerMax = 60 / 60;
 	this->maxWrogow = 5;
 	//Trzymanie myszki
 	this->Trzymam = false;
+	
+	//Inicuje bossa	
+	this->boss = Boss();	
 }
 
 void Game::inicOkno()
@@ -152,12 +158,7 @@ void Game::inicOkno()
 
 void Game::iniCzcionka()
 {
-	this->czcionka.loadFromFile("Pixellari.ttf");
-
-	if (this->czcionka.loadFromFile("Pixellari.ttf")) {
-		cout << "ERROR! Nie mozna zaladowac czcionki" << "\n";
-	}
-
+	this->czcionka.loadFromFile("font.ttf");
 }
 
 void Game::iniTekst()
@@ -166,19 +167,11 @@ void Game::iniTekst()
 	this->tekst.setCharacterSize(20);
 	this->tekst.setFillColor(Color(255,255,255,255));
 	this->tekst.setString("EXAMPLE");
-
 }
  //
 void Game::spawnWrog()
 {	
-	
-	if (this->punkty >= this->punkty + 50)
-	{
-		//this->boss = new Boss(10, 50, 10);
-		//Boss bos(1, 2, 3);
-	}
-
-	this->wrogowie.push_back(Enemy(1, 1, Vector2f(this->okno->getSize())));
+	this->wrogowie.push_back(Enemy(Vector2f(this->okno->getSize())));
 }
 
 void Game::updateWrog()
@@ -194,76 +187,109 @@ void Game::updateWrog()
 			this->spawnTime = 0.f;
 		} 
 		else {
-				this->spawnTime += 1.f;
+			this->spawnTime += 1.f;
 		}
+	}	
+
+	if (this->punkty == this->punkty_cp + 10)
+	{
+		this->punkty_cp += 1;
+		
+		this->boss = boss;
 	}
 	
+	this->boss.ksztalt.move(0.f, 4.f);
+
 	//Wrog poza mapa
 	for (int i = 0; i < this->wrogowie.size(); i++)
 	{
 	
 		//Poruszanie po y
-		this->wrogowie[i].ksztalt.move(0.f, 4.f);
+		this->wrogowie[i].ksztalt.move(0.f, 5.f);
+		//Polimorfizm
+		this->wrogowie[i].zmienKolor();
 
 		//Czy wrog jest w ramie okna
 		if (this->wrogowie[i].ksztalt.getPosition().y > this->okno->getSize().y) {
 			//Usuwa wroga jesli spadl poza mape
 			this->wrogowie.erase(this->wrogowie.begin() + i);			
+			this->punkty -= 1;
 			cout << "Klocek uciekl! Tracisz punkty, zostalo: \n" << punkty << "!\n";
-			this->punkty -= 5;
 		}
+		
+		if (this->boss.ksztalt.getPosition().y > this->okno->getSize().y)
+		{
+			this->boss = 0;
+			this->punkty -= this->boss.zwrocObrazenia();
+			cout << "Boss uciekl! Tracisz punkty, zostalo: \n" << punkty << "!\n";
+		}		
 	}
 	
+	if (this->shootTimer < this->shootTimerMax)
+	{
+		this->shootTimer++;
+	}
+
 	//Klikniecie na wroga
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 
 		//Zapobieganie trzymania myszki
-		if (this->Trzymam == false) {
-
+		if (this->Trzymam == false)
+		{
 			this->Trzymam = true;
 			bool statusWroga = false;
 
-			for (int i = 0; i < this->wrogowie.size() && statusWroga == false; i++)
+			if (this->shootTimer >= this->shootTimerMax)
 			{
-				//Czy myszka jest w ksztalcie ograniczajcym obiekt
-				if (this->wrogowie[i].ksztalt.getGlobalBounds().contains(this->pozycjaMyszkiWidok))
+				for (int i = 0; i < this->wrogowie.size() && statusWroga == false; i++)
 				{
-					//Usuwa wroga na pozycji ktora znalezlismy
-					statusWroga = true;
-					this->wrogowie.erase(this->wrogowie.begin() + i);
-					
-					//Zdobywanie punkta
-					cout << "Zdobywasz punkt:" << punkty <<"!\n";
-					this->punkty += 1;
+					//Czy myszka jest w ksztalcie ograniczajcym obiekt
+					if (this->wrogowie[i].ksztalt.getGlobalBounds().contains(this->pozycjaMyszkiWidok))
+					{
+						//Usuwa wroga na pozycji ktora znalezlismy
+						statusWroga = true;
+						this->wrogowie.erase(this->wrogowie.begin() + i);
+
+						//Zdobywanie punkta
+						cout << "Zdobywasz punkt:" << punkty << "!\n";
+						this->punkty += 1;
+					}
+
+					if (this->boss.ksztalt.getGlobalBounds().contains(this->pozycjaMyszkiWidok))
+					{
+						//this->punkty -= this->boss.zwrocObrazenia();
+						this->boss - 1;
+						this->isAlive();
+						if (this->boss.zwrocHp() == 5) {
+							cout << "Uderz jeszcze raz!" << "\n";
+						}
+					}
 				}
+
+				this->shootTimer = 0;
 			}
 		}
 
 		// Jesli nie klikasz
 		} else {
 		this->Trzymam = false;
-		
-
 	}
 	
+}
 
-	/* jakaœ ciekawa pêtla
-	for (auto& e : this->wrogowie)
+void Game::isAlive()
+{
+	if (this->boss.zwrocHp() <= 0)
 	{
-		//Poruszanie po y
-		e.move(0.f, 2.f);
+		this->boss = 0;
+		this->punkty += this->boss.zwrocPunkty();
+		cout << "Boss zabity, zdobywasz punkt:" << punkty << "!\n";		
 	}
-	*/
 }
 
 void Game::renderWrog()
-{
-	//Renderuje wszystkich wrogow	
-	
-	/*for (auto& trigger : this->wrogowie.ksztalt)
-	{
-		this->okno->draw(trigger);
-	}*/
+{	
+	this->okno->draw(boss.ksztalt);
 	
 	for (size_t i = 0; i < wrogowie.size(); i++)
 	{
@@ -274,13 +300,10 @@ void Game::renderWrog()
 void Game::updateTekst()
 {	
 	//Tworzymy obiekt do ciagu znakow
-	stringstream wypisz;
-
-	//Wypisujemy w niego tekst
-	wypisz << "Punkty: " << this->punkty;
+	string tekst = "Punkty: " + to_string(this->punkty);
 
 	//Ustawiamy
-	this->tekst.setString("awdawdawdawdawd");
+	this->tekst.setString(tekst);
 }
 
 void Game::renderTekst()

@@ -1,6 +1,8 @@
-#include "Enemy.h"
+﻿#include "Enemy.h"
 
-Enemy::Enemy(int hp, int punkty, Vector2f wymiary)
+
+//Wyglad wroga, jego statystyki
+Enemy::Enemy(Vector2f wymiary, int hp, int punkty)
 {
 	this->hp = hp;
 	this->punkty = punkty;
@@ -11,49 +13,61 @@ Enemy::Enemy(int hp, int punkty, Vector2f wymiary)
 	this->ksztalt.setOutlineThickness(3.f);
 	this->ksztalt.setFillColor(Color::White);	
 	this->ksztalt.setPosition(Vector2f(
-		static_cast<float>(rand() % static_cast<int>(wymiary.x - this->ksztalt.getSize().x)), 
+		static_cast<float>(rand() % static_cast<int>(wymiary.x - this->ksztalt.getSize().x)),
 		0
-	));	
+	));
+
 }
 
-//Konstruktor kopiujacy
-/*Enemy::Enemy(Enemy& wrog)
+//
+void Enemy::zmienKolor()
 {
-	this->hp = hp;
-	this->punkty = punkty;
-	
-	this->ksztalt.setPosition(400, 300);
-	//Wyglad wroga
-	this->ksztalt.setSize(Vector2f(50.f, 50.f));
-	this->ksztalt.setScale(Vector2f(1.f, 1.f));
-	this->ksztalt.setOutlineColor(Color(0, 0, 0, 255));
-	this->ksztalt.setOutlineThickness(3.f);
-	this->ksztalt.setFillColor(Color::White);
-}*/
+	this->ksztalt.setFillColor(Color::White);	
+}
 
-/*Boss::Boss(int hp, int punkty, int obrazenia)	
+void Boss::zmienKolor()
 {
+	this->ksztalt.setFillColor(Color::Red);
+}
+
+//Zwraca punkty
+int Enemy::zwrocPunkty()
+{
+	return this->punkty;
+}
+
+//Zwaraca obrazenia
+int Boss::zwrocObrazenia()
+{
+	return this->obrazenia;
+}
+
+//Zwraca HP
+int Boss::zwrocHp()
+{
+	return this->hp;
+}
+
+//Przeciązenie operatorw ( znajdzie sie obiekt typu boss, po prawiej znajdzie sie liczba, to odejmuje ) 
+void Boss::operator-(int obrazenia)
+{
+	this->hp -= obrazenia;
+}
+
+//Dziedziczenie
+Boss::Boss(int hp, int punkty, int obrazenia)
+	: Enemy(Vector2f(300, 400), 10, punkty)
+{	
 	this->obrazenia = obrazenia;
-}*/
-
-void Enemy::zmienKolor(std::string kolor)
-{
-	if (kolor == "red")
-	{
-		this->ksztalt.setFillColor(Color::Red);
-	}
+	this->zmienKolor();	
 }
 
-/*
-void Enemy::inicWrog()
-{
-//Pozycja wroga
-this->setPosition(Vector2f(400, 300));
-//Wyglad wroga
-this->setSize(Vector2f(50.f, 50.f));
-this->setScale(Vector2f(1.f, 1.f));
-this->setOutlineColor(Color(0, 0, 0, 255));
-this->setOutlineThickness(3.f);
+//Kopiowanie
+Boss::Boss(const Boss& boss)
+	: Enemy(Vector2f(300, 400), 5, boss.punkty)
+{	
+	this->obrazenia = boss.obrazenia + 1;
+	
+	std::cout << "Kopia" << std::endl;
 }
-*/
 
