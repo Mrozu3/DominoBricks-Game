@@ -8,13 +8,14 @@ using namespace std;
 //Konstruktory i destruktory
 Game::Game()
 {
-    //Inicjowanie 
+    //Inicjowanie aspektow gry
     this->inicZmienne();
     this->inicOkno();	
 	this->iniCzcionka();
 	this->iniTekst();	
 }
 
+//Usuwwanie okna wirtualne
 Game::~Game()
 {
     delete this->okno;	
@@ -28,6 +29,7 @@ const bool Game::otwarteOkno() const
     return this->okno->isOpen();
 }
 
+//Kontrola co sie dzieje z ekranem
 void Game::Nasluch()
 {
 	//Nasluchiwanie zdarzenia
@@ -49,6 +51,7 @@ void Game::Nasluch()
 	}
 }
 
+//Koniec gry po stracie punktow
 const bool Game::gameOvercontrol() const
 {
 	return this->gameOver;
@@ -57,7 +60,7 @@ const bool Game::gameOvercontrol() const
 //Aktualizuje to co ma sie dziac na ekranie
 void Game::update()
 {
-
+    //Zaleznei od zdarzenia
 	this->Nasluch();
 
 	//Jesli punkty nie spadly ponizej zera
@@ -74,14 +77,20 @@ void Game::update()
 	//Jesli punkty spadly ponizej 0
 	if (this->punkty <= 0) {
 
+		//Ustawia gameOver na zero dla konca gry
 		this->gameOver = true;
 	}
 
-	if (this->punkty > 120) {
+	//Ilosc wrogow na ekranie w zaleznosci od punktow
+	if (this->punkty > 100) {
 
-		this->maxWrogow = 6;
+		this->maxWrogow = 8;
 	}
+	
+	if (this->punkty > 200) {
 
+		this->maxWrogow = 11;
+	}
 }
 
 //Pozycja myszki wobec okna
@@ -145,6 +154,7 @@ void Game::inicZmienne()
 	this->boss = Boss();	
 }
 
+//Ustawienia okna
 void Game::inicOkno()
 {
     //VideoMode(640, 480) zamiast 2 linijek nizej i this->videoMode w renderwindow
@@ -156,11 +166,15 @@ void Game::inicOkno()
 	this->okno->setFramerateLimit(60);	
 }
 
+//Ustawienia czcionki
 void Game::iniCzcionka()
 {
-	this->czcionka.loadFromFile("font.ttf");
+	if(!this->czcionka.loadFromFile("font.ttf")) {
+	   cout << "Mamy problem z czcionka!" << endl;
+	}
 }
 
+//Ustawienia tekstu
 void Game::iniTekst()
 {
 	this->tekst.setFont(this->czcionka);
@@ -168,12 +182,13 @@ void Game::iniTekst()
 	this->tekst.setFillColor(Color(255,255,255,255));
 	this->tekst.setString("EXAMPLE");
 }
- //
+ //Resp wrogow
 void Game::spawnWrog()
 {	
 	this->wrogowie.push_back(Enemy(Vector2f(this->okno->getSize())));
 }
 
+//Zmienianie pozycji wroga
 void Game::updateWrog()
 {
 	//Update czasu spawnowania wroga
@@ -191,6 +206,7 @@ void Game::updateWrog()
 		}
 	}	
 
+	//Zwiekszanie wartosci bossa ( nie dziala poprawnie? )
 	if (this->punkty == this->punkty_cp + 10)
 	{
 		this->punkty_cp += 1;
@@ -198,6 +214,7 @@ void Game::updateWrog()
 		this->boss = boss;
 	}
 	
+	//Poruszanie bossa
 	this->boss.ksztalt.move(0.f, 4.f);
 
 	//Wrog poza mapa
@@ -217,6 +234,7 @@ void Game::updateWrog()
 			cout << "Klocek uciekl! Tracisz punkty, zostalo: \n" << punkty << "!\n";
 		}
 		
+		//Boss poza mapa
 		if (this->boss.ksztalt.getPosition().y > this->okno->getSize().y)
 		{
 			this->boss = 0;
@@ -225,6 +243,7 @@ void Game::updateWrog()
 		}		
 	}
 	
+	//Cooldown myszki
 	if (this->shootTimer < this->shootTimerMax)
 	{
 		this->shootTimer++;
@@ -277,6 +296,7 @@ void Game::updateWrog()
 	
 }
 
+//Czy boss zyje, jesli zabijesz bossa
 void Game::isAlive()
 {
 	if (this->boss.zwrocHp() <= 0)
@@ -287,16 +307,21 @@ void Game::isAlive()
 	}
 }
 
+//Rysuje wrogow
 void Game::renderWrog()
 {	
+	//Renderuje boss-a
 	this->okno->draw(boss.ksztalt);
 	
-	for (size_t i = 0; i < wrogowie.size(); i++)
+	//Petla zakresowa for renderuje wszystkich wrogow
+	for (auto& trigger : this->wrogowie)
 	{
-		this->okno->draw(wrogowie[i].ksztalt);
+		this->okno->draw(trigger.ksztalt);
 	}
+
 }
 
+//Aktualizuje liczbe punkow
 void Game::updateTekst()
 {	
 	//Tworzymy obiekt do ciagu znakow
@@ -306,6 +331,7 @@ void Game::updateTekst()
 	this->tekst.setString(tekst);
 }
 
+//Rysuje tekst
 void Game::renderTekst()
 {
 	//Renderuje tekst

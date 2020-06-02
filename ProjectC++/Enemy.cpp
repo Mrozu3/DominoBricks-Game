@@ -1,5 +1,6 @@
 ﻿#include "Enemy.h"
 
+using namespace std;
 
 //Wyglad wroga, jego statystyki
 Enemy::Enemy(Vector2f wymiary, int hp, int punkty)
@@ -11,7 +12,8 @@ Enemy::Enemy(Vector2f wymiary, int hp, int punkty)
 	this->ksztalt.setScale(Vector2f(1.f, 1.f));
 	this->ksztalt.setOutlineColor(Color(0, 0, 0, 255));
 	this->ksztalt.setOutlineThickness(3.f);
-	this->ksztalt.setFillColor(Color::White);	
+	this->ksztalt.setFillColor(Color::White);
+	//Ustawienie na randomowej pozycji
 	this->ksztalt.setPosition(Vector2f(
 		static_cast<float>(rand() % static_cast<int>(wymiary.x - this->ksztalt.getSize().x)),
 		0
@@ -19,12 +21,13 @@ Enemy::Enemy(Vector2f wymiary, int hp, int punkty)
 
 }
 
-//
+//Polimorfizm zmienKolor dla wroga
 void Enemy::zmienKolor()
 {
 	this->ksztalt.setFillColor(Color::White);	
 }
 
+//Polimorfizm zmienKolor dla boss-a
 void Boss::zmienKolor()
 {
 	this->ksztalt.setFillColor(Color::Red);
@@ -48,7 +51,7 @@ int Boss::zwrocHp()
 	return this->hp;
 }
 
-//Przeciązenie operatorw ( znajdzie sie obiekt typu boss, po prawiej znajdzie sie liczba, to odejmuje ) 
+//Przeciązenie operatow ( znajdzie sie obiekt typu boss, po prawiej znajdzie sie liczba, to odejmuje ) 
 void Boss::operator-(int obrazenia)
 {
 	this->hp -= obrazenia;
@@ -62,12 +65,12 @@ Boss::Boss(int hp, int punkty, int obrazenia)
 	this->zmienKolor();	
 }
 
-//Kopiowanie
+//Metoda kopiujaca
 Boss::Boss(const Boss& boss)
 	: Enemy(Vector2f(300, 400), 5, boss.punkty)
 {	
-	this->obrazenia = boss.obrazenia + 1;
+	this->obrazenia = boss.obrazenia + 5;
 	
-	std::cout << "Kopia" << std::endl;
+	cout << "Konstruktor kopiujacy wywolal bossa" << endl;
 }
 

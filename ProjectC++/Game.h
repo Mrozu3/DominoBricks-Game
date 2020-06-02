@@ -18,7 +18,7 @@ private:
 		VideoMode videoMode;
 		//Zdarzenie
 		Event event;
-				
+		//Wrogowie
 		vector<Enemy> wrogowie;		
 		Boss boss;
 		
@@ -42,10 +42,10 @@ private:
 		//Myszka oszusta
 		int Trzymam;
 
-	//Obiekty gry
-
-	//RectangleShape wrog;
-	//vector<RectangleShape> wrogowie;
+	/*Obiekty gry sprzed zmiany na dynamicznych
+	RectangleShape wrog;
+	vector<RectangleShape> wrogowie;
+	*/
 
 	//Czcionka i tekst
 	Font czcionka;

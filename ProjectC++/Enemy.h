@@ -11,7 +11,6 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
-#include <sstream>
 
 using namespace sf;
 
@@ -24,7 +23,7 @@ protected:
 	int punkty;	
 	
 public:		
-	//Konstruktor
+	//Konstruktor wroga
 	Enemy(Vector2f wymiary = Vector2f(300, 400), int hp = 1, int punkty = 1);
 	//Zadefinowanie ksztaltu
 	RectangleShape ksztalt;
@@ -35,14 +34,16 @@ public:
 	int zwrocPunkty();
 };
 
-//Klasa boss dziedziwczy po Enemy
+//Klasa boss dziedziczy po Enemy
 class Boss : public Enemy
 {
 
+//Dodaje obrazenia, gdy pojawia sie na ekranie
 private:
 	int obrazenia;	
 
 public:
+	//Dziedziczy hp i punkty po wrogu, nadpisuje im wartosc, dodaje obrazenia
 	Boss(int hp = 10, int punkty = 5, int obrazenia = 10);
 	Boss(const Boss& boss);
 	
@@ -51,7 +52,7 @@ public:
 
 	//Nadpisanianie 
 	void zmienKolor();
-
+	//Obrazenia i HP wroga
 	int zwrocObrazenia();	
 	int zwrocHp();
 };
