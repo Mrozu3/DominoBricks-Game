@@ -1,4 +1,5 @@
-﻿#include "Enemy.h"
+﻿//Dolaczanie
+#include "Enemy.h"
 
 using namespace std;
 
@@ -18,7 +19,6 @@ Enemy::Enemy(Vector2f wymiary, int hp, int punkty)
 		static_cast<float>(rand() % static_cast<int>(wymiary.x - this->ksztalt.getSize().x)),
 		0
 	));
-
 }
 
 //Polimorfizm zmienKolor dla wroga
@@ -35,7 +35,7 @@ void Boss::zmienKolor()
 
 //Zwraca punkty
 int Enemy::zwrocPunkty()
-{
+{	
 	return this->punkty;
 }
 

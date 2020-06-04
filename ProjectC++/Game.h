@@ -1,5 +1,5 @@
 #pragma once
-
+//Dolaczanie
 #include "Enemy.h"
 
 //Klasa narzedna jako serce/silnik gry
@@ -7,6 +7,7 @@
 using namespace sf;
 using namespace std;
 
+//Klasa Game
 class Game
 {
 private:
@@ -25,7 +26,6 @@ private:
 	//Prywatna struktura
 	void inicZmienne();
 	void inicOkno();
-	void inicWrog();
 	void iniCzcionka();
 	void iniTekst();
 
@@ -51,7 +51,6 @@ private:
 	Font czcionka;
 	Text tekst;
 
-
 	//Pozycja myszki
 	Vector2i pozycjaMyszkiOkno;
 	Vector2f pozycjaMyszkiWidok;
@@ -63,20 +62,24 @@ public:
 	//Destruktor wirtualny
 	virtual ~Game();
 
-	//Kontrolki
+	//Accessor
 	const bool otwarteOkno() const;
-	const bool gameOvercontrol() const;
-
+	
 	//Funkcje obslugi
 	void Nasluch();
+	void render();
 	void update();
 	void updateMyszka();
-	void render();
+	int zwrocPunkty();
+
+	//Accessor
+	const bool gameOvercontrol() const;
+
 	//Funkcje wrogow
 	void spawnWrog();
-	void updateWrog();
 	void renderWrog();
-	void isAlive();
+	void updateWrog();
+	void liveBoss();
 	//Dodatki
 	void updateTekst();
 	void renderTekst();

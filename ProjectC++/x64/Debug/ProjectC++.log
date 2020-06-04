@@ -1,5 +1,20 @@
 ﻿  Enemy.cpp
   Game.cpp
+D:\C++\Project\MySecond\ProjectC++\Game.cpp(347,35): warning C4244: "=": konwersja z "T" do "int", możliwa utrata danych
+          with
+          [
+              T=float
+          ]
+D:\C++\Project\MySecond\ProjectC++\Game.cpp(337,11): warning C4244: "inicjowanie": konwersja z "int" do "T", możliwa utrata danych
+          with
+          [
+              T=float
+          ]
+D:\C++\Project\MySecond\ProjectC++\Game.cpp(347): message : zobacz odwołanie do kompilowanego tworzenia wystąpienia „T luckyNumber<float>(void)” funkcji szablon
+          with
+          [
+              T=float
+          ]
   Main.cpp
   Generowanie kodu...
   ProjectC++.vcxproj -> D:\C++\Project\MySecond\x64\Debug\ProjectC++.exe

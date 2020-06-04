@@ -30,7 +30,7 @@ public:
 	
 	//Metoda wirtualna i klasa abstrakcyjna
 	void virtual zmienKolor();	
-	void inicWrog();
+	//Zwracanie punktow dla wroga
 	int zwrocPunkty();
 };
 
@@ -38,7 +38,7 @@ public:
 class Boss : public Enemy
 {
 
-//Dodaje obrazenia, gdy pojawia sie na ekranie
+//Dodaje obrazenia dla boss-a
 private:
 	int obrazenia;	
 

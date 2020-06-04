@@ -1,12 +1,12 @@
+//Dolaczanie
 #include "Game.h"
 
 using namespace sf;
 using namespace std;
 
-
 int main()
 {
-	//Losowy czas
+	//Do losowych liczb
 	srand(static_cast<unsigned>(time(NULL)));
 
 	//Zalaczamy gre
@@ -15,7 +15,6 @@ int main()
 	//Wywoluje metode kopiujaca
 	Boss boss;
 	Boss boss2 = boss;
-	
 
 	//Petla gry
 	while (game.otwarteOkno() && !game.gameOvercontrol())
