@@ -1,5 +1,5 @@
-#ifndef _Game_HPP
-#define _Game_HPP
+#ifndef _Game_H
+#define _Game_H
 
 //Dolaczanie
 #include "Enemy.h"
