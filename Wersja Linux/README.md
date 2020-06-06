@@ -9,7 +9,7 @@ Wersja na Linux - sprawdzana na Ubuntu 18.04.4
           
           --Wpisujemy git clone https://github.com/Mrozu3/MySecond ( upewnij się wcześniej, że masz zainstalowany pakiet git ) 
          
-          --Wpisujemy cd MySecond/"Wersja Linux"
+          --Wpisujemy cd MySecond/"Wersja Linux"/"DominoBricks.Linux"
 
           --Będąc w katalogu, w terminalu wpisujemy "make all" - skompiluje nam to wszystkie pliki gry, oraz dołączy odpowiednie biblioteki SFML
 
