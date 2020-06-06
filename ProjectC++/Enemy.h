@@ -45,6 +45,7 @@ private:
 public:
 	//Dziedziczy hp i punkty po wrogu, nadpisuje im wartosc, dodaje obrazenia
 	Boss(int hp = 10, int punkty = 5, int obrazenia = 10);
+	//Kopiujacy
 	Boss(const Boss& boss);
 	
 	//Przeciazenie operatorow
