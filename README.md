@@ -2,8 +2,13 @@ Projekt stworzony na zajęcia C++ z wykorzystaniem podanych zagadnień
 
 "DominoBricks" polega na zestrzeliwaniu spadających klocków za pomocą kliknięcia myszką w biały bądź czerwony kwadrat. Czerwone klocki wymagają więcej trafień oraz dają i zabierają więcej punktów! Nie pozwól spać punktom poniżej zera! 
 
-Gra "DominoBricks" oparta na bibliotekach SFML, tworzona w środowisku Visual Studio, pisana w języku C++. Dodana wersja na Linux-a wraz z uruchamiającym ją MakeFile ( wejdź w -->katalog "Wersja Linux" ). W podanym katalogu znajduje się instrukcja włączenia gry na Linuxie.
-
+Gra "DominoBricks" oparta na bibliotekach SFML, tworzona w środowisku Visual Studio, pisana w języku C++. Dodana wersja na Linux-a wraz z uruchamiającym ją MakeFile ( wejdź w -->katalog "Wersja Linux" ). W podanym katalogu również znajduje się instrukcja włączenia gry na Linuxie.
+        
+        Instrukcja pobrania na Linuxie:
+        --Wpisujemy cd Desktop w terminalu
+      
+        --Wpisujemy git clone https://github.com/Mrozu3/MySecond ( upewnij się wcześniej, że masz zainstalowany pakiet git ) 
+     
         Instrukcja uruchamiania dla Windows:
 
         --Pobrać całe repozytirum, wraz z dołączonymi bibliotekami
